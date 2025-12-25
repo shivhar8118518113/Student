@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(cors());
 
 // Import Models
-const User = require('./models/user');
+const User = require('./models/User');
 const Task = require('./models/task'); // ✅ Task model
 
 // Root Route
