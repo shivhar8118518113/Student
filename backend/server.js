@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
+const path = require('path'); // ✅ Import path module
 
 // Load env variables
 dotenv.config();
@@ -16,10 +17,10 @@ app.use(cors());
 const User = require('./models/User');
 const Task = require('./models/task'); // ✅ Task model
 
-// Root Route
-app.get('/', (req, res) => {
-  res.send('API is running...');
-});
+// Root Route (moved below to not conflict with static files potentially, but we'll use specific routes first)
+// app.get('/', (req, res) => {
+//   res.send('API is running...');
+// });
 
 // ✅ GET Users (Day 1 Task)
 app.get('/api/users', (req, res) => {
@@ -120,8 +121,23 @@ app.delete('/api/tasks', async (req, res) => {
 const authRoutes = require('./routes/authRoutes');
 app.use('/api/auth', authRoutes);
 
-// Mongo URI
-process.env.MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/";
+// -------------------------- DEPLOYMENT --------------------------
+const __dirname1 = path.resolve();
+if (process.env.NODE_ENV === "production" || true) { // Force production mode for simple deployment
+  app.use(express.static(path.join(__dirname1, "../frontend/dist")));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname1, "../frontend/dist", "index.html"));
+  });
+} else {
+  app.get("/", (req, res) => {
+    res.send("API is Running Successfully");
+  });
+}
+// ----------------------------------------------------------------
+
+// Mongo URI (Loaded from Env or Hardcoded Fallback)
+process.env.MONGO_URI = process.env.MONGO_URI || "mongodb+srv://shivanskumar1020_db_user:Harsh123@cluster0.anesio3.mongodb.net/student_db?retryWrites=true&w=majority&appName=Cluster0";
 
 // Debug line
 console.log("Loaded MONGO_URI:", process.env.MONGO_URI);
