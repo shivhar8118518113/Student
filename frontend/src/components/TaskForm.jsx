@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { API_URL } from "../config";
 import { motion, AnimatePresence } from "framer-motion";
 
 function TaskForm({ setItems, items, startCreate, endCreate, onCreateSuccess, onCreateError, creating }) {
@@ -17,7 +18,7 @@ function TaskForm({ setItems, items, startCreate, endCreate, onCreateSuccess, on
 
     try {
       startCreate();
-      const res = await fetch("http://localhost:5000/api/tasks", {
+      const res = await fetch(`${API_URL}/api/tasks`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -75,11 +76,10 @@ function TaskForm({ setItems, items, startCreate, endCreate, onCreateSuccess, on
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 50 }}
             transition={{ duration: 0.4 }}
-            className={`global-toast ${
-              message.includes("⚠️") || message.includes("❌")
-                ? "toast-error"
-                : "toast-success"
-            }`}
+            className={`global-toast ${message.includes("⚠️") || message.includes("❌")
+              ? "toast-error"
+              : "toast-success"
+              }`}
           >
             {message}
           </motion.div>

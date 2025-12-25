@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { API_URL } from "../config";
 
 function UserList() {
   const [users, setUsers] = useState([]);
@@ -8,7 +9,7 @@ function UserList() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/users");
+        const res = await fetch(`${API_URL}/api/users`);
         if (!res.ok) {
           throw new Error("Network response was not ok");
         }

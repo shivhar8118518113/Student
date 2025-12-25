@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { API_URL } from "./config";
 import { BrowserRouter, Routes, Route, Navigate, Link } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -55,7 +56,7 @@ export default function App() {
     const fetchTasks = async () => {
       try {
         setLoading((l) => ({ ...l, fetch: true }));
-        const res = await fetch("http://localhost:5000/api/tasks");
+        const res = await fetch(`${API_URL}/api/tasks`);
         if (!res.ok) throw new Error("Failed to fetch tasks");
         const data = await res.json();
         setItems(data);
@@ -77,7 +78,7 @@ export default function App() {
 
     try {
       setLoading((l) => ({ ...l, delete: true }));
-      const res = await fetch(`http://localhost:5000/api/tasks/${id}`, {
+      const res = await fetch(`${API_URL}/api/tasks/${id}`, {
         method: "DELETE",
       });
       if (!res.ok) throw new Error("Failed to delete task");
@@ -99,7 +100,7 @@ export default function App() {
 
     try {
       setLoading((l) => ({ ...l, clear: true }));
-      const res = await fetch("http://localhost:5000/api/tasks", {
+      const res = await fetch(`${API_URL}/api/tasks`, {
         method: "DELETE",
       });
       if (!res.ok) throw new Error("Failed to clear tasks");
@@ -118,7 +119,7 @@ export default function App() {
   const updateItem = async (id, updatedData) => {
     try {
       setLoading((l) => ({ ...l, update: true }));
-      const res = await fetch(`http://localhost:5000/api/tasks/${id}`, {
+      const res = await fetch(`${API_URL}/api/tasks/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedData),

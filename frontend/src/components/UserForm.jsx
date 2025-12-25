@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { API_URL } from "../config";
 import { motion } from "framer-motion"; // ✅ Import Framer Motion
 
 export default function UserForm() {
@@ -26,7 +27,7 @@ export default function UserForm() {
     setStatus({ type: "", message: "" });
 
     try {
-      const res = await fetch("http://localhost:5000/api/users", {
+      const res = await fetch(`${API_URL}/api/users`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -173,9 +174,8 @@ export default function UserForm() {
 
       {status.message && (
         <motion.div
-          className={`alert mt-3 ${
-            status.type === "success" ? "alert-success" : "alert-danger"
-          }`}
+          className={`alert mt-3 ${status.type === "success" ? "alert-success" : "alert-danger"
+            }`}
           role="alert"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
